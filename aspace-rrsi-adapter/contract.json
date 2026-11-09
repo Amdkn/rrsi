@@ -1,0 +1,29 @@
+{
+  "adapter": "aspace-rrsi-adapter",
+  "version": "0.1.0",
+  "upstream": {
+    "repo": "google-research/rrsi",
+    "license": "Apache-2.0",
+    "frozen_commit": "be50316",
+    "version": "0.1.0"
+  },
+  "surface": {
+    "cli": "python3 rrsi.py --help ; python3 rrsi.py --domain <d> status",
+    "pure": [
+      "rrsi.schedule.budget_table(T, b_min, b_max)",
+      "rrsi.config.RRSIConfig",
+      "rrsi.selection.select_round",
+      "rrsi.history.History"
+    ],
+    "offline": true,
+    "notes": "Le cœur de la méthode (calibrage, sélection, historique, ordonnancement) est pur : aucune API, aucun benchmark dans les modules exposés. Les domaines (eng, workspace) et les runners tiers ne sont jamais invoqués par l'adapter."
+  },
+  "never": [
+    "tout appel modèle (Claude sur Vertex AI, llm.py)",
+    "les domaines eng / workspace (runners, passerelle MCP, socket locale)",
+    "third_party/archipelago (runners de benchmark, httpx)",
+    "tout appel réseau"
+  ],
+  "env": {},
+  "telemetry": "aucun SDK télémétrie ; les occurrences du mot-clé sont des faux positifs (segments de trajectoire / ELF). Réseau confiné aux domaines de benchmark, jamais invoqués ici (voir TELEMETRY-AUDIT)"
+}
